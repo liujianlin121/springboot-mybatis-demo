@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winter.mapper.DbbaroverviewDao">
+  <resultMap id="BaseResultMap" type="com.winter.entity.Dbbaroverview">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="exchange" jdbcType="VARCHAR" property="exchange" />
+    <result column="interval" jdbcType="VARCHAR" property="interval" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="start" jdbcType="TIMESTAMP" property="start" />
+    <result column="end" jdbcType="TIMESTAMP" property="end" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, exchange, `interval`, `count`, `start`, `end`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbbaroverview
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dbbaroverview
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.winter.entity.Dbbaroverview" useGeneratedKeys="true">
+    insert into dbbaroverview (symbol, exchange, `interval`, 
+      `count`, `start`, `end`
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{exchange,jdbcType=VARCHAR}, #{interval,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{start,jdbcType=TIMESTAMP}, #{end,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <insert id="insertList" keyColumn="id" keyProperty="id" parameterType="java.util.List" useGeneratedKeys="true">
+    insert into dbbaroverview (symbol, exchange, `interval`,
+    `count`, `start`, `end`
+    )
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.symbol,jdbcType=VARCHAR}, #{item.exchange,jdbcType=VARCHAR}, #{item.interval,jdbcType=VARCHAR},
+      #{item.count,jdbcType=INTEGER}, #{item.start,jdbcType=TIMESTAMP}, #{item.end,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.winter.entity.Dbbaroverview" useGeneratedKeys="true">
+    insert into dbbaroverview
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        symbol,
+      </if>
+      <if test="exchange != null">
+        exchange,
+      </if>
+      <if test="interval != null">
+        `interval`,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="start != null">
+        `start`,
+      </if>
+      <if test="end != null">
+        `end`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="interval != null">
+        #{interval,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="start != null">
+        #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null">
+        #{end,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.winter.entity.Dbbaroverview">
+    update dbbaroverview
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        exchange = #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="interval != null">
+        `interval` = #{interval,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="start != null">
+        `start` = #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null">
+        `end` = #{end,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.winter.entity.Dbbaroverview">
+    update dbbaroverview
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      exchange = #{exchange,jdbcType=VARCHAR},
+      `interval` = #{interval,jdbcType=VARCHAR},
+      `count` = #{count,jdbcType=INTEGER},
+      `start` = #{start,jdbcType=TIMESTAMP},
+      `end` = #{end,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

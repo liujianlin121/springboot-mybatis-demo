@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winter.mapper.DbbardataDao">
+  <resultMap id="BaseResultMap" type="com.winter.entity.Dbbardata">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="exchange" jdbcType="VARCHAR" property="exchange" />
+    <result column="datetime" jdbcType="TIMESTAMP" property="datetime" />
+    <result column="interval" jdbcType="VARCHAR" property="interval" />
+    <result column="volume" jdbcType="FLOAT" property="volume" />
+    <result column="open_interest" jdbcType="FLOAT" property="openInterest" />
+    <result column="open_price" jdbcType="FLOAT" property="openPrice" />
+    <result column="high_price" jdbcType="FLOAT" property="highPrice" />
+    <result column="low_price" jdbcType="FLOAT" property="lowPrice" />
+    <result column="close_price" jdbcType="FLOAT" property="closePrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, exchange, `datetime`, `interval`, volume, open_interest, open_price, 
+    high_price, low_price, close_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbbardata
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dbbardata
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.winter.entity.Dbbardata" useGeneratedKeys="true">
+    insert into dbbardata (symbol, exchange, `datetime`, 
+      `interval`, volume, open_interest, 
+      open_price, high_price, low_price, 
+      close_price)
+    values (#{symbol,jdbcType=VARCHAR}, #{exchange,jdbcType=VARCHAR}, #{datetime,jdbcType=TIMESTAMP}, 
+      #{interval,jdbcType=VARCHAR}, #{volume,jdbcType=FLOAT}, #{openInterest,jdbcType=FLOAT}, 
+      #{openPrice,jdbcType=FLOAT}, #{highPrice,jdbcType=FLOAT}, #{lowPrice,jdbcType=FLOAT}, 
+      #{closePrice,jdbcType=FLOAT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.winter.entity.Dbbardata" useGeneratedKeys="true">
+    insert into dbbardata
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        symbol,
+      </if>
+      <if test="exchange != null">
+        exchange,
+      </if>
+      <if test="datetime != null">
+        `datetime`,
+      </if>
+      <if test="interval != null">
+        `interval`,
+      </if>
+      <if test="volume != null">
+        volume,
+      </if>
+      <if test="openInterest != null">
+        open_interest,
+      </if>
+      <if test="openPrice != null">
+        open_price,
+      </if>
+      <if test="highPrice != null">
+        high_price,
+      </if>
+      <if test="lowPrice != null">
+        low_price,
+      </if>
+      <if test="closePrice != null">
+        close_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="datetime != null">
+        #{datetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interval != null">
+        #{interval,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=FLOAT},
+      </if>
+      <if test="openInterest != null">
+        #{openInterest,jdbcType=FLOAT},
+      </if>
+      <if test="openPrice != null">
+        #{openPrice,jdbcType=FLOAT},
+      </if>
+      <if test="highPrice != null">
+        #{highPrice,jdbcType=FLOAT},
+      </if>
+      <if test="lowPrice != null">
+        #{lowPrice,jdbcType=FLOAT},
+      </if>
+      <if test="closePrice != null">
+        #{closePrice,jdbcType=FLOAT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.winter.entity.Dbbardata">
+    update dbbardata
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="exchange != null">
+        exchange = #{exchange,jdbcType=VARCHAR},
+      </if>
+      <if test="datetime != null">
+        `datetime` = #{datetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interval != null">
+        `interval` = #{interval,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null">
+        volume = #{volume,jdbcType=FLOAT},
+      </if>
+      <if test="openInterest != null">
+        open_interest = #{openInterest,jdbcType=FLOAT},
+      </if>
+      <if test="openPrice != null">
+        open_price = #{openPrice,jdbcType=FLOAT},
+      </if>
+      <if test="highPrice != null">
+        high_price = #{highPrice,jdbcType=FLOAT},
+      </if>
+      <if test="lowPrice != null">
+        low_price = #{lowPrice,jdbcType=FLOAT},
+      </if>
+      <if test="closePrice != null">
+        close_price = #{closePrice,jdbcType=FLOAT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.winter.entity.Dbbardata">
+    update dbbardata
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      exchange = #{exchange,jdbcType=VARCHAR},
+      `datetime` = #{datetime,jdbcType=TIMESTAMP},
+      `interval` = #{interval,jdbcType=VARCHAR},
+      volume = #{volume,jdbcType=FLOAT},
+      open_interest = #{openInterest,jdbcType=FLOAT},
+      open_price = #{openPrice,jdbcType=FLOAT},
+      high_price = #{highPrice,jdbcType=FLOAT},
+      low_price = #{lowPrice,jdbcType=FLOAT},
+      close_price = #{closePrice,jdbcType=FLOAT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
