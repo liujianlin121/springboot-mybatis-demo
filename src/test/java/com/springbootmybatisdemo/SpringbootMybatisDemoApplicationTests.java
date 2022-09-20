@@ -45,14 +45,14 @@ class SpringbootMybatisDemoApplicationTests {
 
 
     @Test
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void contextLoads() {
 
-        DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
+        /*DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        final TransactionStatus status = transactionManager.getTransaction(definition);
+        final TransactionStatus status = transactionManager.getTransaction(definition);*/
         List<Dbbaroverview> list = new ArrayList<>();
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < 100000; i++) {
             Dbbaroverview dbbaroverview = new Dbbaroverview();
             dbbaroverview.setCount(1);
             dbbaroverview.setEnd(new Date());
@@ -66,7 +66,7 @@ class SpringbootMybatisDemoApplicationTests {
         System.out.println(System.currentTimeMillis() + "导入开始");
         final List<List<Dbbaroverview>> partition1 = ListUtils.partition(list, 1000);
         partition1.forEach(item -> dbbaroverviewDao.insertList(item));
-        transactionManager.commit(status);
+        //transactionManager.commit(status);
         System.out.println(System.currentTimeMillis() + "导入结束");
         //dbbaroverviewDao.insertList(list);
     }
@@ -97,7 +97,7 @@ class SpringbootMybatisDemoApplicationTests {
         // 回滚标志，线程安全
         AtomicBoolean rollbackFlag = new AtomicBoolean(false);
         // 事务计数阀，wait用于子线程内。计数阀清零表示所有事务业务已经结束，主线程可以继续向下走，子线程可以开始判断是否回滚
-        CountDownLatch transactionLatch = new CountDownLatch(10);
+        CountDownLatch transactionLatch = new CountDownLatch(1);
 
         partition1.forEach(itme -> executeInsert(itme, rollbackFlag, transactionLatch));
 
