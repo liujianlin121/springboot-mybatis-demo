@@ -1,6 +1,8 @@
 package com.winter.service;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
@@ -29,5 +31,9 @@ public class NettyServerChannelInitializer extends ChannelInitializer {
         channel.pipeline().addLast("ClientTokenHandler", clientUserHandler);
         // 通过校验最终消息业务处理
         channel.pipeline().addLast("ClientMessageHandler",clientMessageHandler);
+
+
+
+
     }
 }

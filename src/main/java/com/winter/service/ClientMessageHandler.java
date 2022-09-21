@@ -23,11 +23,11 @@ public class ClientMessageHandler extends SimpleChannelInboundHandler<String> {
     public void channelRead0(ChannelHandlerContext ctx, String msg) {
         log.info("接收到的信息数据={}", msg);
         // 返回请求结果
-        String requestUid = (String)JSONUtil.getByPath(JSONUtil.parse(msg), MessageBO.Fields.requestUid);
-        log.info("requestUid",requestUid);
+        //String requestUid = (String)JSONUtil.getByPath(JSONUtil.parse(msg), MessageBO.Fields.requestUid);
+        //log.info("requestUid",requestUid);
         ResponseBO resp = ResponseBO
                 .builder()
-                .requestUid(requestUid)
+                //.requestUid(requestUid)
                 .code(HttpStatus.OK.toString())
                 .success(Boolean.TRUE)
                 .message("请求成功")
