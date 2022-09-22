@@ -6,7 +6,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.util.CharsetUtil;
 
 /**
  * @author: ljl
@@ -35,6 +38,10 @@ public class WebSocketServerTest {
                         pipeline.addLast("http-codec", new HttpServerCodec());
                         pipeline.addLast("aggregator", new HttpObjectAggregator(65535));
                         pipeline.addLast("http-chunked", new ChunkedWriteHandler());
+                        //pipeline.addLast("decoder",new StringDecoder(CharsetUtil.UTF_8));
+                        // 设置解码类型
+                        pipeline.addLast("encoder",new StringEncoder(CharsetUtil.UTF_8));
+                        pipeline.addLast("ClientTokenHandler", new NettyWebSocketParamHandler());
                         pipeline.addLast("handler", new NioWebSocketHandler());
                     }
                 })

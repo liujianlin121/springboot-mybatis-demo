@@ -1,7 +1,5 @@
 package com.springbootmybatisdemo;
 
-import cn.hutool.json.JSONUtil;
-import com.winter.service.MessageBO;
 import org.junit.jupiter.api.Test;
 
 /**
