@@ -41,7 +41,8 @@ public class WebSocketServerTest {
                         //pipeline.addLast("decoder",new StringDecoder(CharsetUtil.UTF_8));
                         // 设置解码类型
                         pipeline.addLast("encoder",new StringEncoder(CharsetUtil.UTF_8));
-                        pipeline.addLast("ClientTokenHandler", new NettyWebSocketParamHandler());
+                        pipeline.addLast(new NettyWebSocketParamHandler());
+                        pipeline.addLast(new MyWebSocketServerProtocolHandler("/web-socket"));
                         pipeline.addLast("handler", new NioWebSocketHandler());
                     }
                 })

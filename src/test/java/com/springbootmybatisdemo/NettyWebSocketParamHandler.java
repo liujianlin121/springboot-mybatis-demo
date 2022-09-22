@@ -3,6 +3,7 @@ package com.springbootmybatisdemo;
 
 import cn.hutool.core.net.url.UrlBuilder;
 import cn.hutool.core.util.URLUtil;
+import com.google.common.base.Preconditions;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,6 +46,8 @@ public class NettyWebSocketParamHandler extends SimpleChannelInboundHandler<Full
         ctx.channel().attr(attributeKey).setIfAbsent(queryMap.get("token").toString());
         request.setUri(URLUtil.getPath(uri));
         ctx.fireChannelRead(request.retain());
+
+
     }
 
     @Override
