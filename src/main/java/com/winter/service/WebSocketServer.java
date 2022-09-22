@@ -1,5 +1,7 @@
-package com.springbootmybatisdemo;
+package com.winter.service;
 
+import com.winter.service.handler.NettyWebSocketParamHandler;
+import com.winter.service.handler.NioWebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,9 +17,9 @@ import io.netty.util.CharsetUtil;
  * @author: ljl
  * @date: 2022/09/21
  **/
-public class WebSocketServerTest {
+public class WebSocketServer {
 
-    public void run() {
+    public void start() {
         // 服务端启动辅助类，用于设置TCP相关参数
         ServerBootstrap bootstrap = new ServerBootstrap();
         // 获取Reactor线程池
@@ -38,11 +40,11 @@ public class WebSocketServerTest {
                         pipeline.addLast("http-codec", new HttpServerCodec());
                         pipeline.addLast("aggregator", new HttpObjectAggregator(65535));
                         pipeline.addLast("http-chunked", new ChunkedWriteHandler());
-                        //pipeline.addLast("decoder",new StringDecoder(CharsetUtil.UTF_8));
+                        pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
                         // 设置解码类型
-                        pipeline.addLast("encoder",new StringEncoder(CharsetUtil.UTF_8));
+                        pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
                         pipeline.addLast(new NettyWebSocketParamHandler());
-                        pipeline.addLast("handler", new NioWebSocketHandler());
+                        pipeline.addLast(new NioWebSocketHandler());
                     }
                 })
                 // bootstrap 还可以设置TCP参数，根据需要可以分别设置主线程池和从线程池参数，来优化服务端性能。
@@ -64,10 +66,6 @@ public class WebSocketServerTest {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }
-    }
-
-    public static void main(String[] args) {
-        new WebSocketServerTest().run();
     }
 
 }
