@@ -1,7 +1,6 @@
 package com;
 
-import com.winter.service.CoordinationNettyServer;
-import com.winter.service.NioNettyServer;
+import com.winter.service.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -18,7 +17,7 @@ public class SpringbootMybatisDemoApplication {
     public static void main(String[] args) {
 
         final ConfigurableApplicationContext run = SpringApplication.run(SpringbootMybatisDemoApplication.class, args);
-        run.getBean(NioNettyServer.class).start();
+        run.getBean(WebSocketServer.class).start();
         try {
             //new CoordinationNettyServer(8090).start();
         } catch (Exception e) {

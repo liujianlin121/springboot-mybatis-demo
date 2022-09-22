@@ -12,13 +12,24 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.CharsetUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 /**
  * @author: ljl
  * @date: 2022/09/21
  **/
+@Component
 public class WebSocketServer {
 
+    @Autowired
+    private NettyWebSocketParamHandler nettyWebSocketParamHandler;
+
+    @Autowired
+    private NioWebSocketHandler nioWebSocketHandler;
+
+    @Async
     public void start() {
         // 服务端启动辅助类，用于设置TCP相关参数
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -43,8 +54,8 @@ public class WebSocketServer {
                         pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
                         // 设置解码类型
                         pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
-                        pipeline.addLast(new NettyWebSocketParamHandler());
-                        pipeline.addLast(new NioWebSocketHandler());
+                        pipeline.addLast(nettyWebSocketParamHandler);
+                        pipeline.addLast(nioWebSocketHandler);
                     }
                 })
                 // bootstrap 还可以设置TCP参数，根据需要可以分别设置主线程池和从线程池参数，来优化服务端性能。
@@ -56,7 +67,7 @@ public class WebSocketServer {
 
         try {
             // 绑定端口，启动select线程，轮询监听channel事件，监听到事件之后就会交给从线程池处理
-            Channel channel = bootstrap.bind(8081).sync().channel();
+            Channel channel = bootstrap.bind(8082).sync().channel();
             // 等待服务端口关闭
             channel.closeFuture().sync();
         } catch (InterruptedException e) {

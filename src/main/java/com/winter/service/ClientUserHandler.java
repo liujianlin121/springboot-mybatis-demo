@@ -53,18 +53,5 @@ public class ClientUserHandler extends SimpleChannelInboundHandler<String> {
         ctx.fireChannelRead(msg);
     }
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        Channel channel = ctx.channel();
-        ResponseBO resp = ResponseBO.builder()
-                .code(HttpStatus.FORBIDDEN.toString())
-                .success(Boolean.FALSE)
-                .build();
-        // 返回错误code
-        if(cause instanceof IllegalArgumentException){
-            resp.setMessage(cause.getMessage());
-            channel.writeAndFlush(JSON.toJSONString(resp));
-            log.warn("Token 校验未通过,{}", channel.localAddress());
-        }
-    }
+
 }

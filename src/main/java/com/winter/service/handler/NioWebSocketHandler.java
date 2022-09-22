@@ -3,10 +3,7 @@ package com.winter.service.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -17,15 +14,23 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.concurrent.ConcurrentMap;
 
 import static io.netty.handler.codec.http.HttpUtil.isKeepAlive;
 
 @Slf4j
+@Component
+@ChannelHandler.Sharable
 public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
     private WebSocketServerHandshaker handshaker;
+
+    @Autowired
+    private ChannelSupervise channelSupervise;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -92,6 +97,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
      */
     private void handleHttpRequest(ChannelHandlerContext ctx,
                                    FullHttpRequest req) {
+
         //要求Upgrade为websocket，过滤掉get/Post
         if (!req.decoderResult().isSuccess()
                 || (!"websocket".equals(req.headers().get("Upgrade")))) {

@@ -7,7 +7,10 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -16,9 +19,11 @@ import java.util.concurrent.ConcurrentMap;
  * @date: 2022/09/21
  **/
 @Slf4j
+@Component
 public class ChannelSupervise {
     private static ChannelGroup GlobalGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     private static ConcurrentMap<String, ChannelId> ChannelMap = new ConcurrentHashMap();
+    private static ConcurrentMap<String, List<ConcurrentMap<String, ChannelId>>> roomMap = new ConcurrentHashMap(1000);
 
     public static void addChannel(Channel channel) {
         GlobalGroup.add(channel);
@@ -36,5 +41,9 @@ public class ChannelSupervise {
 
     public static void send2All(TextWebSocketFrame tws) {
         GlobalGroup.writeAndFlush(tws);
+    }
+
+    public ConcurrentMap<String, List<ConcurrentMap<String, ChannelId>>> getRoomMap() {
+        return roomMap;
     }
 }

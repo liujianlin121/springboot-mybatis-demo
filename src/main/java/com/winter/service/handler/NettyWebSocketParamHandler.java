@@ -1,17 +1,20 @@
 package com.winter.service.handler;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.net.url.UrlBuilder;
 import cn.hutool.core.util.URLUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -44,8 +47,14 @@ public class NettyWebSocketParamHandler extends SimpleChannelInboundHandler<Full
         ctx.channel().attr(attributeKey).setIfAbsent(queryMap.get("token").toString());
         request.setUri(URLUtil.getPath(uri));
         ctx.fireChannelRead(request.retain());
-
-
+        String token = queryMap.get("token").toString();
+        //验证是否登录
+        if (StpUtil.getLoginIdByToken(token) == null) {
+            TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()
+                    + ctx.channel().id() + "：回复" + "请先登录");
+            ctx.channel().writeAndFlush(tws);
+            ctx.close();
+        }
     }
 
     @Override
