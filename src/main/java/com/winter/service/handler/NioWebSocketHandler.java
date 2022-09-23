@@ -60,10 +60,12 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        log.info("com.winter.service.handler.NioWebSocketHandler.channelReadComplete");
         ctx.flush();
     }
 
     private void handlerWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
+        log.info("com.winter.service.handler.NioWebSocketHandler.handlerWebSocketFrame");
         // 判断是否关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
             handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
@@ -97,7 +99,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
      */
     private void handleHttpRequest(ChannelHandlerContext ctx,
                                    FullHttpRequest req) {
-
+        log.info("com.winter.service.handler.NioWebSocketHandler.handleHttpRequest");
         //要求Upgrade为websocket，过滤掉get/Post
         if (!req.decoderResult().isSuccess()
                 || (!"websocket".equals(req.headers().get("Upgrade")))) {
@@ -122,6 +124,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
      */
     private static void sendHttpResponse(ChannelHandlerContext ctx,
                                          FullHttpRequest req, DefaultFullHttpResponse res) {
+        log.info("com.winter.service.handler.NioWebSocketHandler.sendHttpResponse");
         // 返回应答给客户端
         if (res.status().code() != 200) {
             ByteBuf buf = Unpooled.copiedBuffer(res.status().toString(),
@@ -146,6 +149,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        log.info("com.winter.service.handler.NioWebSocketHandler.userEventTriggered");
         if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
             //协议握手成功完成
             log.info("NettyWebSocketHandler.userEventTriggered --> : 协议握手成功完成");
@@ -171,6 +175,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.info("com.winter.service.handler.NioWebSocketHandler.exceptionCaught");
         log.error("NettyWebSocketHandler.exceptionCaught --> cause: ", cause);
         ctx.close();
     }
